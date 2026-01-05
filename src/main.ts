@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { RequestMethod } from '@nestjs/common';
 import { Environment } from './constants/app.constant';
 import { ConfigService } from '@nestjs/config';
-import { GlobalConfig } from './config/global.config';
+import { GlobalConfig } from './config/config.type';
 import helmet from 'helmet';
 
 const env = () => {
@@ -37,6 +37,13 @@ async function bootstrap() {
         }),
     );
 
+    /**
+     * Configures Cross-Origin Resource Sharing (CORS).
+     * - origin: Restricts access to trusted domains defined in configuration.
+     * - methods: Explicitly allow-lists standard RESTful HTTP verbs.
+     * - allowedHeaders: Defines valid request headers to prevent unauthorized metadata injection.
+     * - credentials: Allows the server to accept cookies and Authorization headers from the client.
+     */
     app.enableCors({
         origin: configService.getOrThrow('app.APP_CORS_ORIGIN', {
             infer: true,
