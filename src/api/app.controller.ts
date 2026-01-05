@@ -1,12 +1,13 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { ConfigService } from '@nestjs/config';
+import * as config from '@nestjs/config';
+import { GlobalConfig } from 'src/config/global.config';
 
 @Controller()
 export class AppController {
     constructor(
         private readonly appService: AppService,
-        private readonly configService: ConfigService,
+        private readonly configService: config.ConfigService<GlobalConfig>,
     ) {}
 
     @Get()
