@@ -1,39 +1,23 @@
 /* eslint-disable indent */
-import { registerAs } from '@nestjs/config';
-import { Environment } from 'src/constants/app.constant';
-import { IsEnum, IsInt, IsNotEmpty, IsOptional, Max, Min } from 'class-validator';
-import { validateConfig } from './validate-config';
+import { IsInt, IsNotEmpty, Max, Min } from 'class-validator';
+import { createConfigLoader } from './utils/create-config';
 
 const CONFIG_PREFIX = 'app';
 
-type AppConfig = {
-    nodeEnv: string;
-    port: number;
-};
-
-class AppConfigValidator {
-    @IsOptional()
-    @IsEnum(Environment)
-    NODE_ENV: typeof Environment;
-
+export class AppConfig {
     @IsInt()
     @Min(0)
     @Max(65535)
     @IsNotEmpty()
     PORT: number;
+
+    @IsNotEmpty()
+    APP_NAME: string;
 }
 
-function getConfig(): AppConfig {
-    const defaultPort = '4000';
-
+export default createConfigLoader(CONFIG_PREFIX, AppConfig, () => {
     return {
-        nodeEnv: process.env.NODE_ENV || Environment.Local,
-        port: parseInt(process.env.PORT || defaultPort, 10),
+        PORT: parseInt(process.env.PORT as string, 10),
+        APP_NAME: process.env.APP_NAME as string,
     };
-}
-
-export default registerAs<AppConfig>(CONFIG_PREFIX, () => {
-    console.info(`Registering AppConfig from environment variables`);
-    validateConfig(process.env, AppConfigValidator);
-    return getConfig();
 });

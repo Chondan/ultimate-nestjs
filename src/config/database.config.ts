@@ -1,17 +1,10 @@
 /* eslint-disable indent */
-import { registerAs } from '@nestjs/config';
 import { IsNotEmpty } from 'class-validator';
-import { validateConfig } from './validate-config';
+import { createConfigLoader } from './utils/create-config';
 
 const CONFIG_PREFIX = 'database';
-type DatabaseConfig = {
-    host: string;
-    port: number;
-    username: string;
-    password: string;
-};
 
-class DatabaseConfigValidator {
+export class DatabaseConfig {
     @IsNotEmpty()
     DATABASE_HOST: string;
     @IsNotEmpty()
@@ -22,17 +15,11 @@ class DatabaseConfigValidator {
     DATABASE_PASSWORD: string;
 }
 
-function getConfig(): DatabaseConfig {
+export default createConfigLoader(CONFIG_PREFIX, DatabaseConfig, () => {
     return {
-        host: process.env.DATABASE_HOST || '',
-        port: parseInt(process.env.DATABASE_PORT || '', 10),
-        username: process.env.DATABASE_USERNAME || '',
-        password: process.env.DATABASE_PASSWORD || '',
+        DATABASE_HOST: process.env.DATABASE_HOST || '',
+        DATABASE_PORT: parseInt(process.env.DATABASE_PORT || '', 10),
+        DATABASE_USERNAME: process.env.DATABASE_USERNAME || '',
+        DATABASE_PASSWORD: process.env.DATABASE_PASSWORD || '',
     };
-}
-
-export default registerAs<DatabaseConfig>(CONFIG_PREFIX, () => {
-    console.info(`Registering DatabaseConfig from environment variables`);
-    validateConfig(process.env, DatabaseConfigValidator);
-    return getConfig();
 });
