@@ -30,12 +30,21 @@ async function bootstrap() {
         helmet({
             contentSecurityPolicy: {
                 directives: {
-                    defaultSrc: ['self'],
-                    scriptSrc: ['self'],
+                    defaultSrc: ['"self"'],
+                    scriptSrc: ['"self"'],
                 },
             },
         }),
     );
+
+    app.enableCors({
+        origin: configService.getOrThrow('app.APP_CORS_ORIGIN', {
+            infer: true,
+        }),
+        methods: ['GET', 'PATCH', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD'],
+        allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+        credentials: true,
+    });
 
     /**
      * Sets a global route prefix for all API endpoints (e.g., /api/user).
@@ -46,7 +55,7 @@ async function bootstrap() {
         exclude: [{ path: 'health', method: RequestMethod.GET }],
     });
 
-    await app.listen(configService.getOrThrow('app.PORT', { infer: true }));
+    await app.listen(configService.getOrThrow('app.APP_PORT', { infer: true }));
     console.info(`Starting app with "${env()}" environment`);
     console.info(`Application is running on: "${await app.getUrl()}"`);
 }

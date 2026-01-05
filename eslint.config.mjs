@@ -33,7 +33,7 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-assignment': 'warn',
       'indent': ["error", 4],
       'semi': ['error', 'always'],
-      'quotes': ['error', 'single']
+      'quotes': ['error', 'single'],
     },
   },
 );
