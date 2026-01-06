@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 import { IsInt, IsNotEmpty, IsOptional, Max, Min } from 'class-validator';
-import { createConfigLoader } from './utils/create-config';
+import { createConfigLoader } from '../utils/create-config';
 
 const CONFIG_PREFIX = 'app';
 

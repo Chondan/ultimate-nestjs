@@ -1,11 +1,11 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { ApiModule } from './api/api.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import appConfig from './config/app.config';
-import databaseConfig from './config/database.config';
+import databaseConfig from './config/database/database.config';
 import { Environment } from './constants/app.constant';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GlobalConfig } from './config/config.type';
+import appConfig from './config/app/app.config';
 
 @Module({
     imports: [],

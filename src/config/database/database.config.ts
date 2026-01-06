@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 import { IsNotEmpty } from 'class-validator';
-import { createConfigLoader } from './utils/create-config';
+import { createConfigLoader } from '../utils/create-config';
 
 const CONFIG_PREFIX = 'database';
 
