@@ -1,10 +1,17 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { RequestMethod } from '@nestjs/common';
+import { NestFactory, Reflector } from '@nestjs/core';
+import { AppModule } from './modules/app.module';
+import {
+    ClassSerializerInterceptor,
+    HttpStatus,
+    RequestMethod,
+    UnprocessableEntityException,
+    ValidationPipe,
+} from '@nestjs/common';
 import { Environment } from './constants/app.constant';
 import { ConfigService } from '@nestjs/config';
 import { GlobalConfig } from './config/config.type';
 import helmet from 'helmet';
+import { ValidationError } from 'class-validator';
 
 const env = () => {
     if (!process.env.NODE_ENV || !Object.values(Environment).includes(process.env.NODE_ENV as Environment)) {
@@ -61,6 +68,53 @@ async function bootstrap() {
     app.setGlobalPrefix('api', {
         exclude: [{ path: 'health', method: RequestMethod.GET }],
     });
+
+    /**
+     * Enable global response transformation to apply @Exclude()/@Expose() decorators
+     * ref: https://docs.nestjs.com/techniques/serialization
+     */
+    const reflector = app.get(Reflector);
+    app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector));
+
+    /**
+     * Global Validation Configuration
+     * - transform: Automatically coerces types (e.g., string to number)
+     * - whitelist: Strips properties without decorators
+     * - forbidNonWhitelisted: Rejects requests with extra properties
+     * - exceptionFactory: Recursively maps ValidationErrors into a nested
+     * tree structure for better frontend error handling (supports Arrays/Objects).
+     */
+    app.useGlobalPipes(
+        new ValidationPipe({
+            transform: true,
+            whitelist: true,
+            forbidNonWhitelisted: false,
+            errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+            exceptionFactory: (errors: ValidationError[]) => {
+                const formatError = (error: ValidationError) => {
+                    // 1. If it has children, it's a nested array/object
+                    if (error.children && error.children.length > 0) {
+                        return {
+                            property: error.property,
+                            // Map through children to find specific indices or nested fields
+                            nested: error.children.map((child): { property: string; errors?: string[]; nested?: any[] } =>
+                                formatError(child),
+                            ),
+                        };
+                    }
+
+                    // 2. If no children, it's a standard field error
+                    return {
+                        property: error.property,
+                        errors: Object.values(error.constraints || {}),
+                    };
+                };
+
+                const result = errors.map((error) => formatError(error));
+                return new UnprocessableEntityException(result);
+            },
+        }),
+    );
 
     await app.listen(configService.getOrThrow('app.APP_PORT', { infer: true }));
     console.info(`Starting app with "${env()}" environment`);
