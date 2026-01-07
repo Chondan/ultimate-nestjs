@@ -1,20 +1,22 @@
 import { Body, Controller, Delete, Get, Param, Post, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto, UserDto } from 'src/modules/user/dto/user.dto';
+import { UserDto } from 'src/modules/user/models/user.dto';
 import { EntityToDtoInterceptor } from 'src/interceptors/entity-to-dto.interceptor';
+import { CreateBulkUserDto, CreateUserDto } from './models/create-user.dto';
 
 @Controller('user')
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
     @Post()
+    @UseInterceptors(new EntityToDtoInterceptor(UserDto))
     create(@Body() user: CreateUserDto) {
         return this.userService.create(user);
     }
 
     @Post('/bulk')
-    createMany(@Body() users: CreateUserDto[]) {
-        return this.userService.createMany(users);
+    createMany(@Body() createBulkUserDto: CreateBulkUserDto): Promise<void> {
+        return this.userService.createMany(createBulkUserDto.users);
     }
 
     @Get('/')
