@@ -1,21 +1,21 @@
 /* eslint-disable indent */
 import { IsInt, IsNotEmpty, IsOptional, Max, Min } from 'class-validator';
-import { createConfigLoader } from 'src/utils/config';
+import { createConfigLoader } from '@src/utils/config';
 
 const CONFIG_PREFIX = 'app';
 
 export class AppConfig {
     @IsNotEmpty()
-    APP_NAME: string;
+    APP_NAME!: string;
 
     @IsInt()
     @Min(0)
     @Max(65535)
     @IsNotEmpty()
-    APP_PORT: number;
+    APP_PORT!: number;
 
     @IsOptional()
-    APP_CORS_ORIGIN: string;
+    APP_CORS_ORIGIN!: string;
 }
 
 export default createConfigLoader(CONFIG_PREFIX, AppConfig, () => {

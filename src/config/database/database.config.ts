@@ -1,22 +1,22 @@
 /* eslint-disable indent */
 import { IsNotEmpty } from 'class-validator';
-import { createConfigLoader } from 'src/utils/config';
+import { createConfigLoader } from '@src/utils/config';
 
 const CONFIG_PREFIX = 'database';
 
 export class DatabaseConfig {
     @IsNotEmpty()
-    DATABASE_HOST: string;
+    DATABASE_HOST!: string;
     @IsNotEmpty()
-    DATABASE_PORT: number;
+    DATABASE_PORT!: number;
     @IsNotEmpty()
-    DATABASE_NAME: string;
+    DATABASE_NAME!: string;
     @IsNotEmpty()
-    DATABASE_USERNAME: string;
+    DATABASE_USERNAME!: string;
     @IsNotEmpty()
-    DATABASE_PASSWORD: string;
+    DATABASE_PASSWORD!: string;
     @IsNotEmpty()
-    DATABASE_SSL: boolean;
+    DATABASE_SSL!: boolean;
 }
 
 export default createConfigLoader(CONFIG_PREFIX, DatabaseConfig, () => {

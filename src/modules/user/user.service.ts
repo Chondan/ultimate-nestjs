@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToInstance } from 'class-transformer';
-import { UserDto } from 'src/modules/user/models/user.dto';
-import { UserEntity } from 'src/modules/user/models/user.entity';
+import { UserDto } from '@src/modules/user/models/user.dto';
+import { UserEntity } from '@src/modules/user/models/user.entity';
 import { DataSource, Repository } from 'typeorm';
 import { CreateUserDto } from './models/create-user.dto';
 
