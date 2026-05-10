@@ -4,11 +4,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: docker
+      target: runner
       args:
         - PORT=${APP_PORT:-3001}
     restart: unless-stopped
     env_file: ./env/.env.docker
+    environment:
+      - NODE_ENV=${NODE_ENV}
     ports:
       - '${APP_PORT:-3001}:${APP_PORT:-3001}'
     depends_on:
