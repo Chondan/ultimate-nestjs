@@ -42,6 +42,12 @@ lerna-debug.log*
 .env.production.local
 .env.local
 
+# Environment files — real values are never committed; copy from .example
+docker/.env.*
+!docker/.env.*.example
+env/.env.*
+!env/.env.*.example
+
 # temp directory
 .temp
 .tmp
