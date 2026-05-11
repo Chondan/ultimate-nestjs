@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UserDto } from 'src/modules/user/models/user.dto';
-import { EntityToDtoInterceptor } from 'src/interceptors/entity-to-dto.interceptor';
+import { UserDto } from '@src/modules/user/models/user.dto';
+import { EntityToDtoInterceptor } from '@src/interceptors/entity-to-dto.interceptor';
 import { CreateBulkUserDto, CreateUserDto } from './models/create-user.dto';
 
 @Controller('user')

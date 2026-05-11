@@ -5,20 +5,20 @@ import { IsArray, IsBoolean, IsNotEmpty, IsString, ValidateNested } from 'class-
 export class CreateUserDto {
     @IsString()
     @IsNotEmpty()
-    firstName: string;
+    firstName!: string;
 
     @IsString()
     @IsNotEmpty()
-    lastName: string;
+    lastName!: string;
 
     @IsBoolean()
     @IsNotEmpty()
-    isActive: boolean;
+    isActive!: boolean;
 }
 
 export class CreateBulkUserDto {
     @IsArray()
     @ValidateNested({ each: true })
     @Type(() => CreateUserDto)
-    users: CreateUserDto[];
+    users!: CreateUserDto[];
 }

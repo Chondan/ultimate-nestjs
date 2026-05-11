@@ -56,6 +56,42 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+## Docker Infrastructure
+This project uses a high-performance Multi-Stage Docker build to ensure that the final production image is lean, secure, and contains only the necessary runtime files.
+
+1. Orchestration (Services)
+The easiest way to start the application along with its dependencies (like PostgreSQL) is using the pre-configured Yarn scripts.
+
+Spawn all services:
+
+```bash
+$ yarn docker:up
+```
+
+Shut down all services:
+
+```bash
+$ yarn docker:down
+```
+
+2. Building the Image
+If you need to build the standalone Docker image for the application, use the following command from the project root. This targets the runner stage to minimize image size.
+
+```bash
+$ docker build --target runner -t ultimate-nestjs:latest -f ./docker/Dockerfile .
+```
+
+3. Running the Container
+To run the container manually (outside of Docker Compose), you must specify the environment variables and map the ports.
+
+Example Command:
+
+```bash
+$ docker run -p 3001:3001 \
+  --env-file ./env/.env.docker \
+  --name my-nest-app \
+  ultimate-nestjs:latest
+```
 
 ## Deployment
 

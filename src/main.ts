@@ -16,8 +16,8 @@ import { ValidationError } from 'class-validator';
 const env = () => {
     if (!process.env.NODE_ENV || !Object.values(Environment).includes(process.env.NODE_ENV as Environment)) {
         console.info(`Invalid NODE_ENV: ${process.env.NODE_ENV}`);
-        console.info(`Falling back to NODE_NEV: ${Environment.Local}`);
-        return Environment.Local;
+        console.info(`Falling back to NODE_NEV: ${Environment.Development}`);
+        return Environment.Development;
     }
 
     return process.env.NODE_ENV;

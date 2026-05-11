@@ -2,12 +2,12 @@
 import { Exclude } from 'class-transformer';
 
 export class UserDto {
-    id: number;
+    id!: number;
 
-    firstName: string;
+    firstName!: string;
 
-    lastName: string;
+    lastName!: string;
 
     @Exclude()
-    isActive: boolean;
+    isActive!: boolean;
 }

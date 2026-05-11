@@ -21,12 +21,8 @@ export class AppModule {
                 ConfigModule.forRoot({
                     isGlobal: true,
                     load: [appConfig, databaseConfig],
-                    envFilePath: [`./env/${env}/common.env`, `./env/${env}/database.env`],
-                    /**
-                     * If true, ConfigModule will skip looking for .env files on disk and
-                     * rely strictly on OS-level environment variables (ideal for Production/Docker).
-                     */
-                    ignoreEnvFile: env === Environment.Production,
+                    envFilePath: env === Environment.Local ? [`./env/.env.${env}`] : [],
+                    ignoreEnvFile: env !== Environment.Local,
                 }),
                 TypeOrmModule.forRootAsync({
                     imports: [ConfigModule],
