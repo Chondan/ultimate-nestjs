@@ -24,7 +24,9 @@ const env = () => {
 };
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule.forRoot(env() as Environment));
+    const app = await NestFactory.create(AppModule.forRoot(env() as Environment), {
+        bodyParser: false, // REQUIRED: Let Better Auth handle raw request bodies
+    });
     const configService = app.get(ConfigService<GlobalConfig>);
 
     /**

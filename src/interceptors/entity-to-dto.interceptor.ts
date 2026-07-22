@@ -11,9 +11,15 @@ export class EntityToDtoInterceptor<Entity, Dto> implements NestInterceptor {
         return next.handle().pipe(
             map((data: Entity | Entity[]) => {
                 if (Array.isArray(data)) {
-                    return data.map((item) => plainToInstance(this.dto, item, { excludeExtraneousValues: false }));
+                    return data.map((item) =>
+                        plainToInstance(this.dto, item, {
+                            excludeExtraneousValues: true, // <--- Strips out any unexposed fields
+                        }),
+                    );
                 }
-                return plainToInstance(this.dto, data, { excludeExtraneousValues: false });
+                return plainToInstance(this.dto, data, {
+                    excludeExtraneousValues: true, // <--- Strips out any unexposed fields
+                });
             }),
         );
     }

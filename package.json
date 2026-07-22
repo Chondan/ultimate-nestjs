@@ -23,14 +23,18 @@
     "typeorm:create-migration": "npm run typeorm -- migration:create ./typeorm/migrations/$npm_config_name",
     "typeorm:generate-migration": "npm run typeorm -- migration:generate -d ./typeorm/typeorm.config.ts ./typeorm/migrations/$npm_config_name",
     "typeorm:run-migration": "npm run typeorm migration:run -- -d ./typeorm/typeorm.config.ts",
-    "typeorm:revert-migration": "npm run typeorm migration:revert -- -d ./typeorm/typeorm.config.ts"
+    "typeorm:revert-migration": "npm run typeorm migration:revert -- -d ./typeorm/typeorm.config.ts",
+    "better-auth:gen": "npx auth generate --config ./src/modules/auth/auth.ts"
   },
   "dependencies": {
+    "@hedystia/better-auth-typeorm": "^1.0.1",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/typeorm": "^11.0.0",
+    "@thallesp/nestjs-better-auth": "^2.7.0",
+    "better-auth": "^1.6.23",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.3",
     "helmet": "^8.1.0",
@@ -48,6 +52,7 @@
     "@types/express": "^5.0.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^22.10.7",
+    "@types/pg": "^8.20.0",
     "@types/supertest": "^6.0.2",
     "cross-env": "^10.1.0",
     "eslint": "^9.18.0",

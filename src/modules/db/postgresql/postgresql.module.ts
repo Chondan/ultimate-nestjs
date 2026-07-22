@@ -8,6 +8,7 @@ import { GlobalConfig } from '@src/config/config.type';
         TypeOrmModule.forRootAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
+            // 1. useFactory only returns the connection configuration object, NOT the connection itself.
             useFactory: (configService: ConfigService<GlobalConfig>) => ({
                 type: 'postgres',
                 host: configService.get('database.DATABASE_HOST', { infer: true }),
@@ -17,12 +18,15 @@ import { GlobalConfig } from '@src/config/config.type';
                 database: configService.get('database.DATABASE_NAME', { infer: true }),
                 autoLoadEntities: true,
                 synchronize: false,
-                // Using string check or node_env approach since Env enum might not be here
                 logging: process.env.NODE_ENV === 'development',
                 ssl: configService.get('database.DATABASE_SSL', { infer: true }) ? { rejectUnauthorized: false } : false,
             }),
+            // 2. Under the hood, TypeOrmModule.forRootAsync reads your config, boots the connection,
+            // and registers the active connection in NestJS under the token "DataSource".
         }),
     ],
+    // 3. Exporting TypeOrmModule exposes that "DataSource" provider globally.
+    // This allows other modules (like AuthModule) to safely request "inject: [DataSource]".
     exports: [TypeOrmModule],
 })
 export class PostgresqlModule {}

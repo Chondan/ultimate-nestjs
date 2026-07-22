@@ -5,6 +5,7 @@ import databaseConfig from '../config/database/database.config';
 import { Environment } from '../constants/app.constant';
 import appConfig from '../config/app/app.config';
 import { PostgresqlModule } from './db/postgresql/postgresql.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
     imports: [],
@@ -22,6 +23,8 @@ export class AppModule {
                     envFilePath: env === Environment.Local ? [`./env/.env.${env}`] : [],
                     ignoreEnvFile: env !== Environment.Local,
                 }),
+
+                AuthModule,
 
                 // Inject our database infrastructure layers
                 PostgresqlModule,

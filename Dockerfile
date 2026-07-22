@@ -7,12 +7,12 @@ ENV PORT=${PORT}
 # ── 1. Dependencies (Production only) ─────────────────────────────────────────
 FROM base AS deps
 COPY package*.json ./
-RUN npm install --omit=dev
+RUN npm install --omit=dev --legacy-peer-deps
 
 # ── 2. Builder (All deps + Compilation) ───────────────────────────────────────
 FROM base AS builder
 COPY package*.json ./
-RUN npm install
+RUN npm install --legacy-peer-deps
 COPY . .
 RUN npm run build
 

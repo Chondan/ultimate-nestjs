@@ -2,6 +2,7 @@ import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 import * as config from '@nestjs/config';
 import { GlobalConfig } from '@src/config/config.type';
+import { AllowAnonymous } from '@thallesp/nestjs-better-auth';
 
 @Controller()
 export class AppController {
@@ -11,6 +12,7 @@ export class AppController {
     ) {}
 
     @Get()
+    @AllowAnonymous()
     getHello(): string {
         return this.appService.getHello();
     }
