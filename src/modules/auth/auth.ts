@@ -9,7 +9,7 @@ import { bearer } from 'better-auth/plugins';
 const cliDataSource = new DataSource({
     type: 'postgres',
     host: 'localhost',
-    port: 5433,
+    port: 5432,
     username: 'postgres-docker',
     password: 'postgres-docker',
     database: 'ultimate-nestjs',

@@ -47,6 +47,7 @@ docker/.env.*
 !docker/.env.*.example
 env/.env.*
 !env/.env.*.example
+!env/.env.docker
 
 # temp directory
 .temp
