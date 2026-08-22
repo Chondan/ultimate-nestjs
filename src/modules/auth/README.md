@@ -38,7 +38,7 @@ import { bearer } from 'better-auth/plugins';
 const cliDataSource = new DataSource({
     type: 'postgres',
     host: 'localhost',
-    port: 5433,
+    port: 5432,
     username: 'postgres-docker',
     password: 'postgres-docker',
     database: 'ultimate-nestjs',
@@ -150,7 +150,7 @@ TypeORM connects using the config in `typeorm/typeorm.config.ts`:
 export default new DataSource({
     type: 'postgres',
     host: 'localhost',
-    port: 5433,
+    port: 5432,
     username: 'postgres-docker',
     password: 'postgres-docker',
     database: 'ultimate-nestjs',
